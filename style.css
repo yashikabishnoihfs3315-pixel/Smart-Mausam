@@ -10,7 +10,7 @@
   --text-muted: #64748b;
   --border-color: #e2e8f0;
   --shadow-color: rgba(148, 163, 184, 0.12);
-  
+
   --border-radius: 12px;
   --card-padding: 14px 16px;
   --transition-speed: 0.25s ease;
@@ -47,7 +47,7 @@ body {
 
 .app-container {
   width: 100%;
-  max-width: 960px; /* Reduced max-width for compact feel */
+  max-width: 960px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -212,8 +212,7 @@ body {
 }
 .status-message.info { background: #dbeafe; color: #1e40af; }
 .status-message.error { background: #fee2e2; color: #991b1b; }
-.hidden { display: none !importa
-    nt; }
+.hidden { display: none !important; }
 
 /* CARDS */
 .card {
@@ -233,7 +232,7 @@ body {
 
 @media (min-width: 768px) {
   .dashboard-grid {
-    grid-template-columns: 360px 1fr; /* Compact 2-column layout */
+    grid-template-columns: 360px 1fr;
   }
 }
 
@@ -307,7 +306,7 @@ body {
 }
 
 .temp-display {
-  font-size: 2.5rem; /* Scaled down from 4rem */
+  font-size: 2.5rem;
   font-weight: 800;
   line-height: 1;
 }
@@ -319,7 +318,7 @@ body {
 }
 
 .weather-hero-icon {
-  font-size: 2.8rem; /* Scaled down from 4.5rem */
+  font-size: 2.8rem;
   color: var(--primary-color);
 }
 
@@ -330,7 +329,7 @@ body {
   font-size: 0.78rem;
 }
 
-/* DETAILS GRID */
+/* DETAILS GRID (icon left, label+value stacked right — matches flat spans in HTML) */
 .details-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -338,13 +337,15 @@ body {
 }
 
 .detail-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  column-gap: 10px;
   align-items: center;
-  gap: 10px;
   padding: 10px 12px;
 }
 
 .detail-icon {
+  grid-row: 1 / 3;
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -356,50 +357,20 @@ body {
   font-size: 1.1rem;
 }
 
-.detail-info {
-  display: flex;
-  flex-direction: column;
-}
-
 .detail-label {
+  grid-column: 2;
   font-size: 0.72rem;
   color: var(--text-muted);
 }
 
 .detail-value {
+  grid-column: 2;
   font-size: 0.9rem;
   font-weight: 700;
 }
 
-/* SUN CARD */
-.sun-times {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 4px 0;
-}
-
-.sun-box {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sun-icon { font-size: 1.4rem; }
-.sun-icon.rise { color: #f97316; }
-.sun-icon.set { color: #a855f7; }
-
-.sun-label { display: block; font-size: 0.72rem; color: var(--text-muted); }
-.sun-box strong { font-size: 0.85rem; }
-
-.sun-divider {
-  width: 1px;
-  height: 28px;
-  background: var(--border-color);
-}
-
-/* FORECAST SECTIONS */
-.forecast-section h3 {
+/* FORECAST CARDS */
+.forecast-card .card-title {
   font-size: 0.85rem;
   margin-bottom: 10px;
   display: flex;
@@ -408,8 +379,8 @@ body {
   color: var(--text-muted);
 }
 
-/* HOURLY SCROLL */
-.hourly-scroll {
+/* HOURLY FORECAST (#hourly-container, .hourly-item — from script.js) */
+#hourly-container {
   display: flex;
   gap: 8px;
   overflow-x: auto;
@@ -433,8 +404,8 @@ body {
 .hourly-item i { font-size: 1.1rem; color: var(--primary-color); }
 .hourly-item .temp { font-weight: 700; font-size: 0.82rem; }
 
-/* 7-DAY DAILY LIST */
-.daily-list {
+/* 7-DAY FORECAST (#daily-container, .daily-row — from script.js) */
+#daily-container {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -451,15 +422,14 @@ body {
   font-size: 0.8rem;
 }
 
-.daily-row .day-name {
-    font-weight: 600; width: 70px; }
+.daily-row .day-name { font-weight: 600; width: 70px; }
 .daily-row .day-date { color: var(--text-muted); font-size: 0.72rem; width: 60px; }
 .daily-row i { font-size: 1.1rem; color: var(--primary-color); }
 .daily-row .temp-range { font-weight: 600; }
 .daily-row .min-temp { color: var(--text-muted); font-weight: 400; }
 
-/* FOOTER */
-.footer {
+/* FOOTER (.app-footer — matches index.html) */
+.app-footer {
   text-align: center;
   padding: 8px;
   font-size: 0.75rem;

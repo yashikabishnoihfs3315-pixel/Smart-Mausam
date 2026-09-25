@@ -13,8 +13,8 @@ const state = {
   country: "",
   lat: null,
   lon: null,
-  unit: localStorage.getItem("weather_unit")  "C",
-  theme: localStorage.getItem("weather_theme")  "light",
+  unit: localStorage.getItem("weather_unit") || "C",
+  theme: localStorage.getItem("weather_theme") || "light",
   favorites: JSON.parse(localStorage.getItem("weather_favorites")) || ["Bhopal", "Delhi", "London"]
 };
 
@@ -30,7 +30,7 @@ const DOM = {
   favList: document.getElementById("fav-list"),
   favBtn: document.getElementById("fav-btn"),
   favIcon: document.getElementById("fav-icon"),
-  
+
   cityName: document.getElementById("city-name"),
   countryCode: document.getElementById("country-code"),
   localTime: document.getElementById("local-time"),
@@ -39,7 +39,7 @@ const DOM = {
   heroWeatherIcon: document.getElementById("hero-weather-icon"),
   feelsLike: document.getElementById("feels-like"),
   lastUpdated: document.getElementById("last-updated"),
-  
+
   valHumidity: document.getElementById("val-humidity"),
   valWind: document.getElementById("val-wind"),
   valPressure: document.getElementById("val-pressure"),
@@ -48,7 +48,7 @@ const DOM = {
   valPrecip: document.getElementById("val-precip"),
   valSunrise: document.getElementById("val-sunrise"),
   valSunset: document.getElementById("val-sunset"),
-  
+
   hourlyContainer: document.getElementById("hourly-container"),
   dailyContainer: document.getElementById("daily-container")
 };
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initUnit();
   renderFavorites();
-  
+
   getCityCoordinates(CONFIG.DEFAULT_CITY);
 
   DOM.searchForm.addEventListener("submit", handleSearch);
@@ -72,17 +72,17 @@ document.addEventListener("DOMContentLoaded", () => {
 async function getCityCoordinates(cityName) {
   try {
     showStatus("Fetching city position...", "info");
-    const response = await fetch(${CONFIG.GEOCODING_API}?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json);
+    const response = await fetch(`${CONFIG.GEOCODING_API}?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`);
     const data = await response.json();
 
     if (!data.results || data.results.length === 0) {
-      showStatus(City "${cityName}" not found!, "error");
+      showStatus(`City "${cityName}" not found!`, "error");
       return;
     }
 
     const result = data.results[0];
     state.currentCity = result.name;
-    state.country = result.country_code  result.country  "";
+    state.country = result.country_code || result.country || "";
     state.lat = result.latitude;
     state.lon = result.longitude;
 
@@ -96,14 +96,13 @@ async function getCityCoordinates(cityName) {
 async function fetchWeatherData(lat, lon) {
   try {
     showStatus("Loading weather...", "info");
-    const url = ${CONFIG.WEATHER_API}?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,surface_pressure,wind_speed_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto;
+    const url = `${CONFIG.WEATHER_API}?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,surface_pressure,wind_speed_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto`;
 
     const response = await fetch(url);
     if (!response.ok) throw new Error("API Failed");
-    
+
     const data = await response.json();
-    hideStatus()
-    ;
+    hideStatus();
     renderDashboard(data);
   } catch (error) {
     showStatus("Failed to load weather data.", "error");
@@ -120,23 +119,23 @@ function renderDashboard(data) {
   DOM.cityName.textContent = state.currentCity;
   DOM.countryCode.textContent = state.country.toUpperCase();
   DOM.weatherCondition.textContent = weatherInfo.label;
-  DOM.heroWeatherIcon.className = ${weatherInfo.icon} weather-hero-icon;
+  DOM.heroWeatherIcon.className = `${weatherInfo.icon} weather-hero-icon`;
 
   const temp = convertTemp(current.temperature_2m);
   const feels = convertTemp(current.apparent_temperature);
   DOM.currentTemp.textContent = Math.round(temp);
-  DOM.feelsLike.textContent = ${Math.round(feels)}°${state.unit};
+  DOM.feelsLike.textContent = `${Math.round(feels)}°${state.unit}`;
 
   const now = new Date();
   DOM.localTime.textContent = now.toLocaleDateString('en-US', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
   DOM.lastUpdated.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  DOM.valHumidity.textContent = ${current.relative_humidity_2m}%;
-  DOM.valWind.textContent = ${Math.round(current.wind_speed_10m)} km/h;
-  DOM.valPressure.textContent = ${Math.round(current.surface_pressure)} hPa;
-  DOM.valVisibility.textContent = 10 km;
+  DOM.valHumidity.textContent = `${current.relative_humidity_2m}%`;
+  DOM.valWind.textContent = `${Math.round(current.wind_speed_10m)} km/h`;
+  DOM.valPressure.textContent = `${Math.round(current.surface_pressure)} hPa`;
+  DOM.valVisibility.textContent = `10 km`;
   DOM.valUv.textContent = daily.uv_index_max ? daily.uv_index_max[0] : "N/A";
-  DOM.valPrecip.textContent = ${current.precipitation} mm;
+  DOM.valPrecip.textContent = `${current.precipitation} mm`;
 
   if (daily.sunrise && daily.sunset) {
     DOM.valSunrise.textContent = formatTime(daily.sunrise[0]);
@@ -161,11 +160,11 @@ function renderHourlyForecast(hourly) {
 
     const item = document.createElement("div");
     item.className = "hourly-item";
-    item.innerHTML = 
+    item.innerHTML = `
       <span class="time">${i === currentHour ? 'Now' : timeStr}</span>
       <i class="${iconClass}"></i>
       <span class="temp">${temp}°${state.unit}</span>
-    ;
+    `;
     DOM.hourlyContainer.appendChild(item);
   }
 }
@@ -177,19 +176,19 @@ function renderDailyForecast(daily) {
     const dateObj = new Date(daily.time[i]);
     const dayName = i === 0 ? "Today" : dateObj.toLocaleDateString('en-US', { weekday: 'short' });
     const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    
+
     const maxTemp = Math.round(convertTemp(daily.temperature_2m_max[i]));
     const minTemp = Math.round(convertTemp(daily.temperature_2m_min[i]));
     const iconClass = mapWmoCodeToCondition(daily.weather_code[i]).icon;
 
     const row = document.createElement("div");
     row.className = "daily-row";
-    row.innerHTML = 
+    row.innerHTML = `
       <span class="day-name">${dayName}</span>
       <span class="day-date">${dateStr}</span>
       <i class="${iconClass}"></i>
       <span class="temp-range">${maxTemp}° <span class="min-temp">/ ${minTemp}°</span></span>
-    ;
+    `;
     DOM.dailyContainer.appendChild(row);
   }
 }
@@ -211,9 +210,8 @@ function mapWmoCodeToCondition(code) {
   return map[code] || { label: "Cloudy", icon: "ri-cloud-line" };
 }
 
-function con
-vertTemp(celsius) {
-  return state.unit === "F" ? (celsius * 9/5) + 32 : celsius;
+function convertTemp(celsius) {
+  return state.unit === "F" ? (celsius * 9 / 5) + 32 : celsius;
 }
 
 function formatTime(isoString) {
@@ -223,7 +221,7 @@ function formatTime(isoString) {
 
 function showStatus(text, type) {
   DOM.statusMsg.textContent = text;
-  DOM.statusMsg.className = status-message ${type};
+  DOM.statusMsg.className = `status-message ${type}`;
 }
 
 function hideStatus() {
@@ -273,13 +271,13 @@ function initTheme() {
 
 function toggleUnit() {
   state.unit = state.unit === "C" ? "F" : "C";
-  DOM.unitLabel.textContent = °${state.unit};
+  DOM.unitLabel.textContent = `°${state.unit}`;
   localStorage.setItem("weather_unit", state.unit);
   if (state.lat && state.lon) fetchWeatherData(state.lat, state.lon);
 }
 
 function initUnit() {
-  DOM.unitLabel.textContent = °${state.unit};
+  DOM.unitLabel.textContent = `°${state.unit}`;
 }
 
 function toggleFavoriteCurrentCity() {
@@ -305,7 +303,7 @@ function renderFavorites() {
   state.favorites.forEach((city) => {
     const chip = document.createElement("div");
     chip.className = "fav-chip";
-    chip.innerHTML = <span>${city}</span><i class="ri-close-line remove-fav"></i>;
+    chip.innerHTML = `<span>${city}</span><i class="ri-close-line remove-fav"></i>`;
     chip.querySelector("span").addEventListener("click", () => getCityCoordinates(city));
     chip.querySelector(".remove-fav").addEventListener("click", (e) => {
       e.stopPropagation();

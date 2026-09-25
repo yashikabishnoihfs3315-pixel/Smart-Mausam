@@ -14,7 +14,7 @@
 <body data-theme="light">
 
   <div class="app-container">
-    
+
     <!-- ===================================
          COMPACT HEADER & NAVBAR
     =================================== -->
@@ -67,7 +67,7 @@
          COMPACT DASHBOARD GRID
     =================================== -->
     <main class="dashboard-grid" id="dashboard">
-      
+
       <!-- LEFT COLUMN: MAIN WEATHER & QUICK STATS -->
       <div class="left-col">
         <!-- HERO CARD -->
@@ -105,92 +105,61 @@
 
         <!-- DETAILS GRID -->
         <section class="details-grid">
-          <div class="card de
-          tail-card">
-            <div class="detail-icon"><i class="ri-drop-line"></i></div>
-            <div class="detail-info">
-              <span class="detail-label">Humidity</span>
-              <span class="detail-value" id="val-humidity">--%</span>
-            </div>
-          </div>
-
           <div class="card detail-card">
-            <div class="detail-icon"><i class="ri-windy-line"></i></div>
-            <div class="detail-info">
-              <span class="detail-label">Wind</span>
-              <span class="detail-value" id="val-wind">-- km/h</span>
-            </div>
+            <i class="ri-drop-line detail-icon"></i>
+            <span class="detail-label">Humidity</span>
+            <span class="detail-value" id="val-humidity">--%</span>
           </div>
-
           <div class="card detail-card">
-            <div class="detail-icon"><i class="ri-compass-3-line"></i></div>
-            <div class="detail-info">
-              <span class="detail-label">Pressure</span>
-              <span class="detail-value" id="val-pressure">-- hPa</span>
-            </div>
+            <i class="ri-windy-line detail-icon"></i>
+            <span class="detail-label">Wind</span>
+            <span class="detail-value" id="val-wind">-- km/h</span>
           </div>
-
           <div class="card detail-card">
-            <div class="detail-icon"><i class="ri-eye-line"></i></div>
-            <div class="detail-info">
-              <span class="detail-label">Visibility</span>
-              <span class="detail-value" id="val-visibility">-- km</span>
-            </div>
+            <i class="ri-dashboard-3-line detail-icon"></i>
+            <span class="detail-label">Pressure</span>
+            <span class="detail-value" id="val-pressure">-- hPa</span>
           </div>
-
           <div class="card detail-card">
-            <div class="detail-icon"><i class="ri-sun-line"></i></div>
-            <div class="detail-info">
-              <span class="detail-label">UV Index</span>
-              <span class="detail-value" id="val-uv">--</span>
-            </div>
+            <i class="ri-eye-line detail-icon"></i>
+            <span class="detail-label">Visibility</span>
+            <span class="detail-value" id="val-visibility">-- km</span>
           </div>
-
           <div class="card detail-card">
-            <div class="detail-icon"><i class="ri-umbrella-line"></i></div>
-            <div class="detail-info">
-              <span class="detail-label">Rain</span>
-              <span class="detail-value" id="val-precip">-- mm</span>
-            </div>
+            <i class="ri-sun-fog-line detail-icon"></i>
+            <span class="detail-label">UV Index</span>
+            <span class="detail-value" id="val-uv">--</span>
+          </div>
+          <div class="card detail-card">
+            <i class="ri-cloud-line detail-icon"></i>
+            <span class="detail-label">Precipitation</span>
+            <span class="detail-value" id="val-precip">-- mm</span>
+          </div>
+          <div class="card detail-card">
+            <i class="ri-sun-line detail-icon"></i>
+            <span class="detail-label">Sunrise</span>
+            <span class="detail-value" id="val-sunrise">--:--</span>
+          </div>
+          <div class="card detail-card">
+            <i class="ri-moon-clear-line detail-icon"></i>
+            <span class="detail-label">Sunset</span>
+            <span class="detail-value" id="val-sunset">--:--</span>
           </div>
         </section>
       </div>
 
-      <!-- RIGHT COLUMN: FORECASTS & SUN -->
+      <!-- RIGHT COLUMN: HOURLY & DAILY FORECAST -->
       <div class="right-col">
-        <!-- SUN CARD -->
-        <section class="card sun-card">
-          <div class="sun-times">
-            <div class="sun-box">
-              <i class="ri-sunrise-line sun-icon rise"></i>
-              <div>
-                <span class="sun-label">Sunrise</span>
-                <strong id="val-sunrise">--:-- AM</strong>
-              </div>
-            </div>
-            <div class="sun-divider"></div>
-            <div class="sun-box">
-              <i class="ri-sunset-line sun-icon set"></i>
-              <div>
-                <span class="sun-label">Sunset</span>
-                <strong id="val-sunset">--:-- PM</strong>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- HOURLY FORECAST -->
-        <section class="card forecast-section">
-          <h3><i class="ri-time-line"></i> Hourly Forecast</h3>
-          <div class="hourly-scroll" id="hourly-container">
+        <section class="card forecast-card">
+          <h2 class="card-title"><i class="ri-time-line"></i> Hourly Forecast</h2>
+          <div class="hourly-container" id="hourly-container">
             <!-- Dynamically populated -->
           </div>
         </section>
 
-        <!-- 7-DAY FORECAST -->
-        <section class="card forecast-section">
-          <h3><i class="ri-calendar-event-line"></i> 7-Day Forecast</h3>
-          <div class="daily-list" id="daily-container">
+        <section class="card forecast-card">
+          <h2 class="card-title"><i class="ri-calendar-line"></i> 7-Day Forecast</h2>
+          <div class="daily-container" id="daily-container">
             <!-- Dynamically populated -->
           </div>
         </section>
@@ -198,9 +167,8 @@
 
     </main>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-      <p>WeatherTrack Pro • Compact Real-time Dashboard</p>
+    <footer class="app-footer">
+      <span>Powered by Open-Meteo · WeatherTrack Pro</span>
     </footer>
 
   </div>
